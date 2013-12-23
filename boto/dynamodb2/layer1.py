@@ -266,7 +266,8 @@ class DynamoDBConnection(AWSQueryConnection):
                                  body=json.dumps(params))
 
     def create_table(self, attribute_definitions, table_name, key_schema,
-                     provisioned_throughput, local_secondary_indexes=None):
+                     provisioned_throughput, local_secondary_indexes=None,
+                     global_secondary_indexes=None):
         """
         The CreateTable operation adds a new table to your account. In
         an AWS account, table names must be unique within each region.
@@ -352,6 +353,9 @@ class DynamoDBConnection(AWSQueryConnection):
                   attribute into two different indexes, this counts as two distinct
                   attributes when determining the total.
 
+        :type global_secondary_indexes: list
+        :param global_secondary_indexes:
+
         :type provisioned_throughput: dict
         :param provisioned_throughput:
 
@@ -364,6 +368,8 @@ class DynamoDBConnection(AWSQueryConnection):
         }
         if local_secondary_indexes is not None:
             params['LocalSecondaryIndexes'] = local_secondary_indexes
+        if global_secondary_indexes is not None:
+            params['GlobalSecondaryIndexes'] = global_secondary_indexes
         return self.make_request(action='CreateTable',
                                  body=json.dumps(params))
 
